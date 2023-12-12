@@ -66,6 +66,20 @@ def write_file(file_name, my_list):
         f_writer.writeheader()
         f_writer.writerows(res)
 
+def copy_data(source_file, destination_file, row_number):
+    source_data = read_file(source_file)
+    if 1 <= row_number <= len(source_data):
+        obj = source_data[row_number - 1]
+        dest_data = read_file(destination_file)
+        dest_data.append(obj)
+        with open(destination_file, 'w', encoding='utf-8', newline='') as data:
+            f_writer = DictWriter(data, ["Имя", "Фамилия", "Телефон"])
+            f_writer.writeheader()
+            f_writer.writerows(dest_data)
+        print(f"Данные из строки {row_number} успешно скопированы.")
+    else:
+        print("Неверный номер строки.")
+
 file_name = 'phone.csv'
 def main():
     while True:
@@ -81,5 +95,10 @@ def main():
                 print("Файл отсутствует.")
                 continue
             print(read_file(file_name))
+        elif command == 'c':
+            source_file = input("Введите имя исходного файла: ")
+            destination_file = input("Введите имя файла назначения: ")
+            row_number = int(input("Введите номер строки для копирования: "))
+            copy_data(source_file, destination_file, row_number)
 
 main()
